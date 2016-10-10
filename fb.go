@@ -25,13 +25,14 @@ import (
 	"syscall"
 )
 
-// Open expects a framebuffer device as its argument. It is opened and its
-// memory is memory-mapped to a local buffer. Writing to this buffer changes
-// the screen output. The returned Device implements the draw.Image interface.
-// This means that you can use it to copy to and from other images.
-// Currently only the RGB565 color model is supported.
-// After you are done using the Device, call Close on it to unmap the memory
-// and close the framebuffer file.
+// Open expects a framebuffer device as its argument (such as "/dev/fb0"). The
+// device will be memory-mapped to a local buffer. Writing to the device changes
+// the screen output.
+// The returned Device implements the draw.Image interface. This means that you
+// can use it to copy to and from other images.
+// The only supported color model for the specified frame buffer is RGB565.
+// After you are done using the Device, call Close on it to unmap the memory and
+// close the framebuffer file.
 func Open(device string) (*Device, error) {
 	file, err := os.OpenFile(device, os.O_RDWR, os.ModeDevice)
 	if err != nil {
