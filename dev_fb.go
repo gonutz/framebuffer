@@ -30,8 +30,10 @@ func (fb *FrameBuffer) Pixels() ([]byte, error) {
 		return nil, err
 	}
 
-	fd := fb.File().Fd()
+	// Calculate the number of bytes to map
 	length := vi.XRes * vi.YRes * vi.BitsPerPixel / 8
+
+	fd := fb.File().Fd()
 	flags := syscall.PROT_READ | syscall.PROT_WRITE
 	return syscall.Mmap(int(fd), 0, int(length), flags, syscall.MAP_SHARED)
 }
